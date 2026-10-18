@@ -1,0 +1,10 @@
+# Ignore dependency folders
+**/node_modules/
+
+# Ignore production builds
+frontend/build/
+frontend/dist/
+
+# Ignore environment variables / secrets
+**.env
+**.env.local
