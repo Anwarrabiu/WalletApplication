@@ -16,7 +16,7 @@ exports.protect = async (req, res, next)=>{
             //and if it is, extracts the data stored inside it('user id and email' in this case because we sign the jwt with only id).
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             //console.log(decoded);
-            //get user from db excluding password field
+            //get user from db excluding password field and attached to the request payloads
             req.user = await User.findById(decoded.id).select('-password');
             next();
         }catch(error){

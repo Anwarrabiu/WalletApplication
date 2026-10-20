@@ -10,7 +10,7 @@ const { response } = require('express');
 exports.fundWallet = async (req, res)=>{
     const {email, amount, userId} = req.body;
     try{
-        //Create a pending transaction
+        //Create a pending transaction first
         const newTransaction = await Transaction.create({
             email,
             user: userId,
@@ -20,7 +20,7 @@ exports.fundWallet = async (req, res)=>{
             type: 'credit',
 
         });
-        //initialize payment with stack
+        //initialize payment with paystack after creating pending transaction
         const response = await axios.post(
             'https://api.paystack.co/transaction/initialize', 
             {
@@ -60,7 +60,7 @@ exports.fundWallet = async (req, res)=>{
             }
      );
 
-    // const data =response.data.data;
+     // const data =response.data.data;
      console.log(response);
      if(response.data.data.status === 'success'){ // to confirm if the transaction in paystack transactions is success
         //UPDATE USER WALLET TRANSACTION
@@ -100,7 +100,6 @@ exports.paystackWebhook = async (req, res)=>{
         if(hash !== req.headers['x-paystack-signature']){
             return res.status(400).send('Invalid signature');
         }
-
 
         const event = req.body;
 
@@ -337,6 +336,7 @@ exports.verifyBankAccount = async (req, res)=>{
             return res.status(400).json({message:'Bank code and bank number is required'});
         }
         const response = await axios.get(
+            
             `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`,
             {
                 headers:{Authorization:`Bearer ${process.env.PAYSTACK_SECRET_KEY}`},

@@ -14,7 +14,7 @@ const Dashboard = (props)=>{
     const token = localStorage.getItem('token');
 
     
-    //  Wrap fetchBalance in useCallback
+    //Wrap fetchBalance in useCallback
     const fetchBalance = useCallback(async () => {
         if (!currentUser?.id) return; // Prevent call if user ID isn't loaded yet
         try {
@@ -55,7 +55,7 @@ const Dashboard = (props)=>{
             <button onClick={()=>navigate('/Transfer')}>Transfer to Wallet</button>
             <button onClick={()=>navigate('/Interbanks-Transfer')}>Inter Banks Transfer</button>
 
-
+ 
             <h2>Transaction History</h2>
             <table border='1' cellPadding='6'> 
                 <thead>
